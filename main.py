@@ -11,7 +11,7 @@ import os
 def to_grey(X):
     return X.reshape(*(X.shape + (1,)))
 
-(x_train, y_train), (x_test, y_test) = mnist.load_data('./mnist.npz')
+(x_train, y_train), (x_test, y_test) = mnist.load_data()
 
 x_train = to_grey(x_train)
 x_test = to_grey(x_test)
