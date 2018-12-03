@@ -10,7 +10,9 @@ import argparse
 
 
 def to_grey(X):
-    return X.reshape(*(X.shape + (1,)))
+    X = X.reshape(*(X.shape + (1,)))
+    X /= 255.0
+    return X
 
 if __name__ == '__main__':
 
