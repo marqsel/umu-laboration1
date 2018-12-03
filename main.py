@@ -7,11 +7,12 @@ from keras.callbacks import TensorBoard
 import datetime
 import os
 import argparse
+import numpy as np
 
 
 def to_grey(X):
+    X = X.astype(np.float32) / 255.0
     X = X.reshape(*(X.shape + (1,)))
-    X /= 255.0
     return X
 
 if __name__ == '__main__':
@@ -52,7 +53,7 @@ if __name__ == '__main__':
     conv2ds = [
         [64, 32]
     ]
-    epochs = [3]
+    epochs = [10]
 
     now = datetime.datetime.now()
 
