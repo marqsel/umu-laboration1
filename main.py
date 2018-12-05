@@ -7,13 +7,7 @@ from keras.callbacks import TensorBoard
 import datetime
 import os
 import argparse
-import numpy as np
 
-
-def to_grey(X):
-    X = X.astype(np.float32) / 255.0
-    X = X.reshape(*(X.shape + (1,)))
-    return X
 
 if __name__ == '__main__':
 
@@ -37,8 +31,8 @@ if __name__ == '__main__':
         y_train = y_train[:500]
         y_test = y_test[:500]
 
-    x_train = to_grey(x_train)
-    x_test = to_grey(x_test)
+    x_train = utils.to_grey(x_train)
+    x_test = utils.to_grey(x_test)
 
     y_train = to_categorical(y_train, 10)
     y_test = to_categorical(y_test, 10)

@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <title>Test your model</title>
+        <style>
+            #c {
+                border: 2px solid grey;
+            }
+
+            .button-container {
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            <canvas id="c" width="{{ canvas_width }}" height="{{ canvas_height }}"></canvas>
+        </div>
+        <div class="button-container">
+            <button id="btnTest">Test</button>
+            <button id="btnClear">Clear</button>
+        </div>
+        <p id="result"></p>
+    </body>
+    <script src="{{ url_for('static', filename='fabric.min.js') }}"></script>
+    <script>
+        (function () {
+            var canvas = new fabric.Canvas('c', {
+                isDrawingMode: true,
+                backgroundColor : "#fff"
+            });
+
+            canvas.freeDrawingBrush.width = 30;
+
+            var btnTest = document.getElementById('btnTest'),
+                btnClear = document.getElementById('btnClear'),
+                textResult = document.getElementById('result');
+
+            btnTest.addEventListener('click', function () {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                    if (this.readyState == 4 && this.status == 200) {
+                        textResult.innerHTML = this.responseText;
+                    }
+                };
+
+                xhttp.open("POST", "{{ url_for('ajax_test') }}", true);
+                xhttp.send(canvas.toDataURL('png'));
+            });
+
+            btnClear.addEventListener('click', function () {
+                textResult.innerHTML = '';
+                canvas.clear();
+            });
+
+
+        })();
+    </script>
+</html>
