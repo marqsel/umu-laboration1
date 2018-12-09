@@ -2,7 +2,7 @@ import utils
 from keras.datasets import mnist
 from keras.utils import to_categorical
 from keras.models import Sequential
-from keras.layers import Dense, Conv2D, Flatten
+from keras.layers import Dense, Conv2D, Flatten, Dropout
 from keras.callbacks import TensorBoard
 import datetime
 import os
@@ -49,9 +49,11 @@ if __name__ == '__main__':
     ]
     epochs = [10]
 
+    dropouts = [0, 0.2, 0.35, 0.5]
+
     now = datetime.datetime.now()
 
-    for conv2d, kernel_size, activation, nb_epochs in utils.iter_combinations(conv2ds, kernel_sizes, activations, epochs):
+    for conv2d, kernel_size, activation, nb_epochs, dropout in utils.iter_combinations(conv2ds, kernel_sizes, activations, epochs, dropouts):
 
         model = Sequential()
 
@@ -70,6 +72,9 @@ if __name__ == '__main__':
 
             model.add(Conv2D(**conv2d_kwargs))
 
+            if dropout:
+                model.add(Dropout(dropout))
+
         model.add(Flatten())
         model.add(Dense(10, activation='softmax'))
 
@@ -81,6 +86,6 @@ if __name__ == '__main__':
 
         model.fit(x_train, y_train, validation_data=(x_test, y_test), epochs=nb_epochs, callbacks=callbacks)
 
-        model_filename = 'model_f%s_kernel%d_a_%s_epochs_%d_%s.model' % ('_'.join(map(str, conv2d)), kernel_size, activation, nb_epochs, now.strftime('%Y_%m_%d_%H_%M_%S'))
+        model_filename = 'model_f%s_kernel%d_a_%s_epochs_%d_dpo_%s_%s.model' % ('_'.join(map(str, conv2d)), kernel_size, activation, nb_epochs, str(dropout).replace('.', '_'), now.strftime('%Y_%m_%d_%H_%M_%S'))
 
         model.save(os.path.join(model_dir, model_filename))
