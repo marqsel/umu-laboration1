@@ -3,6 +3,7 @@ from PIL import Image
 import PIL.ImageOps
 
 
+# Iterates over all combinations and yields them
 def iter_combinations(*iterables):
     if not len(iterables):
         yield tuple()
@@ -12,12 +13,22 @@ def iter_combinations(*iterables):
                 yield (item,) + group
 
 
+# Transform a comma line argument and returns a list. If item type is specified, each value is transformed to that type.
+def cmd_arg_to_list(value, item_type=None, seperator=','):
+    values = value.split(seperator)
+    if item_type:
+        values = map(item_type, values)
+    return list(values)
+
+
+# Normalizes and transformes the input value used for the network.
 def to_grey(X):
     X = X.astype(np.float32) / 255.0
     X = X.reshape(*(X.shape + (1,)))
     return X
 
 
+# Inverts an image's colors.
 def invert_image(image):
     if image.mode == 'RGBA':
         r,g,b,a = image.split()
@@ -35,6 +46,7 @@ def invert_image(image):
     return image
 
 
+# Transforms an image from IO and returns input used when predicting a number.
 def transform_image(image, width, height, invert=False, filename=None):
     img = Image.open(image)
 
