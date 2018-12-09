@@ -13,7 +13,8 @@ app = Flask(__name__)
 def index():
     return render_template('index.html', **{
         'canvas_width': settings.CANVAS_WIDTH,
-        'canvas_height': settings.CANVAS_HEIGHT
+        'canvas_height': settings.CANVAS_HEIGHT,
+        'brush_width': settings.BRUSH_WIDTH
     })
 
 
@@ -32,7 +33,7 @@ def ajax_test():
     prediction = np.argmax(result)
     probability = result[0][prediction]
 
-    return 'It\'s a %d (%.0f%%)' % (prediction, probability * 100)
+    return 'It\'s a %d (%.2f)' % (prediction, probability)
 
 
 if __name__ == '__main__':

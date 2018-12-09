@@ -7,13 +7,24 @@
             }
 
             .button-container {
+                margin-top: 10px;
+            }
+            .slider-container {
                 margin-top: 20px;
+            }
+
+            .slider-container label {
+                display: block;
             }
         </style>
     </head>
     <body>
         <div>
             <canvas id="c" width="{{ canvas_width }}" height="{{ canvas_height }}"></canvas>
+        </div>
+        <div class="slider-container">
+            <label>Brush width</label>
+            <input id="rangeBrushWidth" type="range" min="1" max="50" value="{{ brush_width }}">
         </div>
         <div class="button-container">
             <button id="btnTest">Test</button>
@@ -29,11 +40,14 @@
                 backgroundColor : "#fff"
             });
 
-            canvas.freeDrawingBrush.width = 30;
+
 
             var btnTest = document.getElementById('btnTest'),
                 btnClear = document.getElementById('btnClear'),
-                textResult = document.getElementById('result');
+                textResult = document.getElementById('result'),
+                rangeBrushWidth = document.getElementById('rangeBrushWidth');
+
+            canvas.freeDrawingBrush.width = rangeBrushWidth.value;
 
             btnTest.addEventListener('click', function () {
                 var xhttp = new XMLHttpRequest();
@@ -52,6 +66,9 @@
                 canvas.clear();
             });
 
+            rangeBrushWidth.addEventListener('change', function () {
+                canvas.freeDrawingBrush.width = rangeBrushWidth.value;
+            });
 
         })();
     </script>
